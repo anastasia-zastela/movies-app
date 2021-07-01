@@ -1,5 +1,5 @@
 import React from 'react'
-import AddProfileForm from '../forms/AddMovieForm';
+import AddMovieForm from '../forms/AddMovieForm';
 import { Button, Modal } from 'react-bootstrap';
 
 
@@ -12,7 +12,7 @@ const AddMovieModal = ({ showAddMovieModal, handleCloseAddMovieModal }) => {
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <AddProfileForm />
+                <AddMovieForm />
             </Modal.Body>
             <Modal.Footer>
                 <Button variant="secondary" onClick={handleCloseAddMovieModal}>

@@ -23,7 +23,7 @@ const DEFAULT_FORM_VALUES = {
     stars: [{ id: 1, value: '' }]
 }
 
-const AddProfileForm = () => {
+const AddMovieForm = () => {
     const dispatch = useDispatch()
     const [validateForms, setValidateForms] = useState(DEFAULT_VALIDATE_VALUES)
     const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES)
@@ -146,4 +146,4 @@ const AddProfileForm = () => {
     )
 };
 
-export default AddProfileForm;
+export default AddMovieForm;
