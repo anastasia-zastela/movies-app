@@ -5,9 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "node server/server",
     "server": "nodemon server/server",
+    "server-build": "node server/server",
     "client": "npm start --prefix client",
+    "client-build": "npm run build --prefix client",
+    "build": "concurrently \"npm run server-build\" \"npm run client-build\"",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "data:import": "node server/seeder",
     "data:destroy": "node server/seeder -d"
