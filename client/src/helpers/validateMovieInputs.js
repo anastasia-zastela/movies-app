@@ -3,8 +3,7 @@ const validateMovieInputs = ({ title, releaseYear, format, stars }) => {
 
     if (!title.trim()) {
         errors.title = 'Title required';
-    }
-    else if (!/^[A-Za-z]+/.test(title.trim())) {
+    } else if (!/^[A-Za-z]+/.test(title.trim())) {
         errors.title = 'Enter a valid title';
     }
 
@@ -17,12 +16,10 @@ const validateMovieInputs = ({ title, releaseYear, format, stars }) => {
     }
 
     if (stars[0].value.length === 0) {
-        errors.stars = 'At least 1 star is required'
+        errors.stars = 'At least 1 star is required';
     }
 
     return errors;
-}
+};
 
-export {
-    validateMovieInputs
-}
+export { validateMovieInputs };
