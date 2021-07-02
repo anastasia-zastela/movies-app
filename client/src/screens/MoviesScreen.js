@@ -45,13 +45,17 @@ const MoviesScreen = () => {
 
         return jsxToRender;
     };
-
     useEffect(() => {
         dispatch(listMovies());
+    }, []);
+
+    useEffect(() => {
         if (filteredMovies) {
             setMoviesToRender(filteredMovies);
+        } else {
+            setMoviesToRender('');
         }
-    }, [dispatch, filteredMovies]);
+    }, [filteredMovies, movies]);
 
     return (
         <React.Fragment>

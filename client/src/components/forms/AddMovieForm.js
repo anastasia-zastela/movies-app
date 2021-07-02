@@ -46,6 +46,7 @@ const AddMovieForm = () => {
 
     const submitHandler = (e) => {
         e.preventDefault();
+
         const validationErrors = validateMovieInputs(formValues);
 
         if (!isObjEmpty(validationErrors)) {

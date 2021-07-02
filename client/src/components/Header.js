@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Container, Button, Form, FormControl } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { searchMovies } from '../actions/movieActions';
+import { searchMovies, searchMoviesReset } from '../actions/movieActions';
 import AddMovieModal from './modals/AddMovieModal';
 
 const Header = () => {
@@ -12,14 +12,10 @@ const Header = () => {
 
     const { success } = useSelector((state) => state.movieCreate);
 
-    const refreshPage = () => {
-        window.location.reload();
-    };
-
     const { movies } = useSelector((state) => state.movieList);
 
     const onClickLogoHandler = () => {
-        refreshPage();
+        dispatch(searchMoviesReset());
     };
 
     const onClickSearchHandler = (e) => {
@@ -39,7 +35,6 @@ const Header = () => {
                     boolean = true;
                 }
             });
-            console.log(boolean);
             return boolean || mov.title.toLowerCase().indexOf(userInput.toLowerCase()) !== -1;
         });
         dispatch(searchMovies(filteredMoviesArr));
@@ -48,7 +43,7 @@ const Header = () => {
     const handleCloseAddMovieModal = () => {
         setShowAddMovieModal(false);
         if (success) {
-            refreshPage();
+            dispatch(searchMoviesReset());
         }
     };
     const handleShowAddMovieModal = () => setShowAddMovieModal(true);

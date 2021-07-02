@@ -1,10 +1,13 @@
 import axios from 'axios';
 import {
     MOVIES_SEARCH,
+    MOVIES_SEARCH_RESET,
     MOVIE_CREATE_FAIL,
+    MOVIE_CREATE_LOCALLY,
     MOVIE_CREATE_REQUEST,
     MOVIE_CREATE_SUCCESS,
     MOVIE_DELETE_FAIL,
+    MOVIE_DELETE_LOCALLY,
     MOVIE_DELETE_REQUEST,
     MOVIE_DELETE_SUCCESS,
     MOVIE_LIST_FAIL,
@@ -46,6 +49,10 @@ export const deleteMovie = (id) => async (dispatch) => {
         dispatch({
             type: MOVIE_DELETE_SUCCESS
         });
+        dispatch({
+            type: MOVIE_DELETE_LOCALLY,
+            payload: id
+        });
     } catch (error) {
         const message =
             error.response && error.response.data.message
@@ -79,6 +86,15 @@ export const createMovie =
                 type: MOVIE_CREATE_SUCCESS,
                 payload: data
             });
+            dispatch({
+                type: MOVIE_CREATE_LOCALLY,
+                payload: {
+                    title,
+                    releaseYear,
+                    format,
+                    stars: stars.map((star) => star.value)
+                }
+            });
         } catch (error) {
             const message =
                 error.response && error.response.data.message
@@ -95,5 +111,11 @@ export const searchMovies = (filteredMoviesArr) => (dispatch) => {
     dispatch({
         type: MOVIES_SEARCH,
         payload: filteredMoviesArr
+    });
+};
+
+export const searchMoviesReset = () => (dispatch) => {
+    dispatch({
+        type: MOVIES_SEARCH_RESET
     });
 };
