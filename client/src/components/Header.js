@@ -42,16 +42,12 @@ const Header = () => {
 
     const toggleShowModalAddMovie = () => setShowAddMovieModal(!showAddMovieModal);
 
-    const addMovieModal = (
-        <AddMovieModal
-            showAddMovieModal={showAddMovieModal}
-            toggleShowModalAddMovie={toggleShowModalAddMovie}
-        />
-    );
-
     return (
         <header>
-            {addMovieModal}
+            <AddMovieModal
+                showAddMovieModal={showAddMovieModal}
+                toggleShowModalAddMovie={toggleShowModalAddMovie}
+            />
             <Navbar bg="dark" variant="dark" expand="lg">
                 <Container>
                     <Navbar.Brand style={{ cursor: 'pointer' }} onClick={onClickLogoHandler}>

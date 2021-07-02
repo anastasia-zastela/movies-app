@@ -26,28 +26,6 @@ const MovieCard = ({ id, title, releaseYear, format, stars }) => {
         dispatch(deleteMovie(id));
     };
 
-    const showMoreModal = (
-        <ShowMoreModal
-            showShowMoreModal={showShowMoreModal}
-            handleCloseShowMoreModal={handleCloseShowMoreModal}
-            movie={{
-                title,
-                releaseYear,
-                format,
-                stars
-            }}
-        />
-    );
-
-    const deleteConfirmationModal = (
-        <DeleteConfirmationModal
-            showDeleteConfirmationModal={showDeleteConfirmationModal}
-            handleCloseDeleteConfirmationModal={handleCloseDeleteConfirmationModal}
-            deleteHandler={deleteHandler}
-            idMovieToDelete={id}
-        />
-    );
-
     useEffect(() => {
         if (successDelete) {
             handleCloseDeleteConfirmationModal();
@@ -57,8 +35,22 @@ const MovieCard = ({ id, title, releaseYear, format, stars }) => {
 
     return (
         <React.Fragment>
-            {showMoreModal}
-            {deleteConfirmationModal}
+            <ShowMoreModal
+                showShowMoreModal={showShowMoreModal}
+                handleCloseShowMoreModal={handleCloseShowMoreModal}
+                movie={{
+                    title,
+                    releaseYear,
+                    format,
+                    stars
+                }}
+            />
+            <DeleteConfirmationModal
+                showDeleteConfirmationModal={showDeleteConfirmationModal}
+                handleCloseDeleteConfirmationModal={handleCloseDeleteConfirmationModal}
+                deleteHandler={deleteHandler}
+                idMovieToDelete={id}
+            />
             <Card className="my-3 p-3 rounded">
                 <Card.Body>
                     <Card.Title>{title}</Card.Title>
