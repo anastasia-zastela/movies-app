@@ -2,7 +2,7 @@
 
 #### OVERVIEW
 
-Full stack movies search app written on MERN stack. Allows user to add movie to a database, delete movie from the database, display all movies, sort movies in alphabetical order, search through movie title and stars name and surname. React-boostrap library used for UI. Unit tests wriiten with Enzyme library.
+Full stack movies search app written on MERN stack. Allows user to add movie to a database, delete movie from the database, display all movies, sort movies in alphabetical order, search through movie title and stars name and surname. React-boostrap library used for UI. Unit tests written with Enzyme library.
 
 #### FRONT END
 
