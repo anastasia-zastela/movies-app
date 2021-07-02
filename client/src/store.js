@@ -5,7 +5,6 @@ import {
     movieCreateReducer,
     movieDeleteReducer,
     movieListReducer,
-    movieSignalToSearchReducer,
     moviesSearchReducer
 } from './reducers/movieReducer';
 
@@ -13,8 +12,7 @@ const reducer = combineReducers({
     movieList: movieListReducer,
     movieDelete: movieDeleteReducer,
     movieCreate: movieCreateReducer,
-    moviesSearch: moviesSearchReducer,
-    movieSignalToSearch: movieSignalToSearchReducer
+    moviesSearch: moviesSearchReducer
 });
 
 const middleware = [thunk];

@@ -9,8 +9,7 @@ import {
     MOVIE_DELETE_SUCCESS,
     MOVIE_LIST_FAIL,
     MOVIE_LIST_REQUEST,
-    MOVIE_LIST_SUCCESS,
-    MOVIE_SIGNAL_TO_SEARCH
+    MOVIE_LIST_SUCCESS
 } from '../constants/movieConstants';
 import { BASE_URL } from '../constants/url';
 
@@ -96,12 +95,5 @@ export const searchMovies = (filteredMoviesArr) => (dispatch) => {
     dispatch({
         type: MOVIES_SEARCH,
         payload: filteredMoviesArr
-    });
-};
-
-export const setSignal = (boolean) => (dispatch) => {
-    dispatch({
-        type: MOVIE_SIGNAL_TO_SEARCH,
-        payload: boolean
     });
 };

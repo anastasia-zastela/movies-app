@@ -9,8 +9,7 @@ import {
     MOVIE_DELETE_SUCCESS,
     MOVIE_LIST_FAIL,
     MOVIE_LIST_REQUEST,
-    MOVIE_LIST_SUCCESS,
-    MOVIE_SIGNAL_TO_SEARCH
+    MOVIE_LIST_SUCCESS
 } from '../constants/movieConstants';
 
 export const movieListReducer = (state = { movies: [] }, action) => {
@@ -67,15 +66,6 @@ export const moviesSearchReducer = (state = {}, action) => {
     switch (action.type) {
         case MOVIES_SEARCH:
             return { filteredMovies: action.payload };
-        default:
-            return state;
-    }
-};
-
-export const movieSignalToSearchReducer = (state = {}, action) => {
-    switch (action.type) {
-        case MOVIE_SIGNAL_TO_SEARCH:
-            return { signal: action.payload };
         default:
             return state;
     }

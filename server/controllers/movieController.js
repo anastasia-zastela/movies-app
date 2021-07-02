@@ -24,7 +24,6 @@ const getMovieById = async (req, res) => {
 // Create single movie
 // POST /api/movies
 const createMovie = async (req, res) => {
-  console.log(req.body);
   const movie = new Movie({
     title: req.body.title,
     releaseYear: req.body.releaseYear,

@@ -16,8 +16,6 @@ const MoviesScreen = () => {
 
     const { filteredMovies } = useSelector((state) => state.moviesSearch);
 
-    const { signal } = useSelector((state) => state.movieSignalToSearch);
-
     const onClickSortHandler = (moviesArr) => {
         const sortedMoviesArr = moviesArr.sort((a, b) => a.title.localeCompare(b.title));
 
@@ -25,26 +23,35 @@ const MoviesScreen = () => {
     };
 
     const renderInputs = (moviesArr) => {
-        return moviesArr.map((mov) => (
-            <Col key={mov.title} sm={12} md={6} lg={4} xl={3}>
-                <MovieCard
-                    key={mov._id}
-                    id={mov._id}
-                    title={mov.title}
-                    releaseYear={new Date(mov.releaseYear).getFullYear()}
-                    format={mov.format}
-                    stars={mov.stars}
-                />
-            </Col>
-        ));
+        const jsxToRender =
+            moviesArr.length === 0 ? (
+                <h3 style={{ marginTop: '20px' }}>No items found</h3>
+            ) : (
+                moviesArr.map((mov) => {
+                    return (
+                        <Col key={mov.title} sm={12} md={6} lg={4} xl={3}>
+                            <MovieCard
+                                key={mov._id}
+                                id={mov._id}
+                                title={mov.title}
+                                releaseYear={new Date(mov.releaseYear).getFullYear()}
+                                format={mov.format}
+                                stars={mov.stars}
+                            />
+                        </Col>
+                    );
+                })
+            );
+
+        return jsxToRender;
     };
 
     useEffect(() => {
         dispatch(listMovies());
-        if (signal) {
+        if (filteredMovies) {
             setMoviesToRender(filteredMovies);
         }
-    }, [dispatch, signal, filteredMovies]);
+    }, [dispatch, filteredMovies]);
 
     return (
         <React.Fragment>
