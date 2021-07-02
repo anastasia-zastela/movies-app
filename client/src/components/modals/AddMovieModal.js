@@ -2,9 +2,9 @@ import React from 'react';
 import AddMovieForm from '../forms/AddMovieForm';
 import { Button, Modal } from 'react-bootstrap';
 
-const AddMovieModal = ({ showAddMovieModal, handleCloseAddMovieModal }) => {
+const AddMovieModal = ({ showAddMovieModal, toggleShowModalAddMovie }) => {
     return (
-        <Modal show={showAddMovieModal} onHide={handleCloseAddMovieModal}>
+        <Modal show={showAddMovieModal} onHide={toggleShowModalAddMovie}>
             <Modal.Header>
                 <Modal.Title>Add New Modal</Modal.Title>
             </Modal.Header>
@@ -12,7 +12,7 @@ const AddMovieModal = ({ showAddMovieModal, handleCloseAddMovieModal }) => {
                 <AddMovieForm />
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="secondary" onClick={handleCloseAddMovieModal}>
+                <Button variant="secondary" onClick={toggleShowModalAddMovie}>
                     Close
                 </Button>
             </Modal.Footer>

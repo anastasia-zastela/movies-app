@@ -10,7 +10,7 @@ const Header = () => {
 
     const dispatch = useDispatch();
 
-    const { success } = useSelector((state) => state.movieCreate);
+    // const { success } = useSelector((state) => state.movieCreate);
 
     const { movies } = useSelector((state) => state.movieList);
 
@@ -40,18 +40,12 @@ const Header = () => {
         dispatch(searchMovies(filteredMoviesArr));
     };
 
-    const handleCloseAddMovieModal = () => {
-        setShowAddMovieModal(false);
-        if (success) {
-            dispatch(searchMoviesReset());
-        }
-    };
-    const handleShowAddMovieModal = () => setShowAddMovieModal(true);
+    const toggleShowModalAddMovie = () => setShowAddMovieModal(!showAddMovieModal);
 
     const addMovieModal = (
         <AddMovieModal
             showAddMovieModal={showAddMovieModal}
-            handleCloseAddMovieModal={handleCloseAddMovieModal}
+            toggleShowModalAddMovie={toggleShowModalAddMovie}
         />
     );
 
@@ -67,7 +61,7 @@ const Header = () => {
                     <Navbar.Collapse id="basic-navbar-nav">
                         <Nav className="ml-auto">
                             <Nav.Item>
-                                <Button onClick={handleShowAddMovieModal}>Add Movie</Button>
+                                <Button onClick={toggleShowModalAddMovie}>Add Movie</Button>
                             </Nav.Item>
                             <Form inline>
                                 <FormControl

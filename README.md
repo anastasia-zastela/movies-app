@@ -32,4 +32,4 @@ To start app run 'npm run build'.<br />
 To start app in development mode run 'npm run dev'.<br />
 To import sample data to database 'npm run data:import'.<br />
 To destroy data from database run 'npm run data:destroy'.<br />
-To run tests run 'npm run test'.
+To run tests run 'npm run test' inside client folder.
