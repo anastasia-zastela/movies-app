@@ -1,7 +1,5 @@
 import axios from 'axios';
 import {
-    MOVIES_SEARCH,
-    MOVIES_SEARCH_RESET,
     MOVIE_CREATE_FAIL,
     MOVIE_CREATE_LOCALLY,
     MOVIE_CREATE_REQUEST,
@@ -16,27 +14,41 @@ import {
 } from '../constants/movieConstants';
 import { BASE_URL } from '../constants/url';
 
-export const listMovies = () => async (dispatch) => {
-    try {
-        dispatch({
-            type: MOVIE_LIST_REQUEST
-        });
-        const { data } = await axios.get(`${BASE_URL}/api/movies`);
+export const listMovies =
+    (pageNumber = 1, keyword = '', isSorted = false) =>
+    async (dispatch) => {
+        try {
+            dispatch({
+                type: MOVIE_LIST_REQUEST
+            });
+            const { data } = await axios.get(`${BASE_URL}/api/movies`, {
+                params: {
+                    pageNumber: pageNumber,
+                    keyword: keyword
+                }
+            });
 
-        dispatch({
-            type: MOVIE_LIST_SUCCESS,
-            payload: data
-        });
-    } catch (error) {
-        dispatch({
-            type: MOVIE_LIST_FAIL,
-            payload:
-                error.response && error.response.data.message
-                    ? error.response.data.message
-                    : error.message
-        });
-    }
-};
+            let sortedData;
+            if (isSorted) {
+                sortedData = {
+                    ...data,
+                    movies: [...data.movies.sort((a, b) => a.title.localeCompare(b.title))]
+                };
+            }
+            dispatch({
+                type: MOVIE_LIST_SUCCESS,
+                payload: sortedData ? sortedData : data
+            });
+        } catch (error) {
+            dispatch({
+                type: MOVIE_LIST_FAIL,
+                payload:
+                    error.response && error.response.data.message
+                        ? error.response.data.message
+                        : error.message
+            });
+        }
+    };
 
 export const deleteMovie = (id) => async (dispatch) => {
     try {
@@ -89,6 +101,7 @@ export const createMovie =
             dispatch({
                 type: MOVIE_CREATE_LOCALLY,
                 payload: {
+                    _id: data._id,
                     title,
                     releaseYear,
                     format,
@@ -106,16 +119,3 @@ export const createMovie =
             });
         }
     };
-
-export const searchMovies = (filteredMoviesArr) => (dispatch) => {
-    dispatch({
-        type: MOVIES_SEARCH,
-        payload: filteredMoviesArr
-    });
-};
-
-export const searchMoviesReset = () => (dispatch) => {
-    dispatch({
-        type: MOVIES_SEARCH_RESET
-    });
-};

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Navbar, Nav, Container, Button, Form, FormControl } from 'react-bootstrap';
-import { useDispatch, useSelector } from 'react-redux';
-import { searchMovies, searchMoviesReset } from '../actions/movieActions';
+import { useDispatch } from 'react-redux';
+import { listMovies } from '../actions/movieActions';
 import AddMovieModal from './modals/AddMovieModal';
 
 const Header = () => {
@@ -10,12 +10,9 @@ const Header = () => {
 
     const dispatch = useDispatch();
 
-    // const { success } = useSelector((state) => state.movieCreate);
-
-    const { movies } = useSelector((state) => state.movieList);
-
-    const onClickLogoHandler = () => {
-        dispatch(searchMoviesReset());
+    const onClickResetHandler = () => {
+        setUserInput('');
+        dispatch(listMovies());
     };
 
     const onClickSearchHandler = (e) => {
@@ -25,19 +22,7 @@ const Header = () => {
             return;
         }
 
-        const filteredMoviesArr = movies.filter((mov) => {
-            let boolean;
-            const filteredActors = mov.stars.map(
-                (st) => st.toLowerCase().indexOf(userInput.toLowerCase()) !== -1
-            );
-            filteredActors.forEach((ac) => {
-                if (ac) {
-                    boolean = true;
-                }
-            });
-            return boolean || mov.title.toLowerCase().indexOf(userInput.toLowerCase()) !== -1;
-        });
-        dispatch(searchMovies(filteredMoviesArr));
+        dispatch(listMovies(1, userInput.trim()));
     };
 
     const toggleShowModalAddMovie = () => setShowAddMovieModal(!showAddMovieModal);
@@ -50,7 +35,7 @@ const Header = () => {
             />
             <Navbar bg="dark" variant="dark" expand="lg">
                 <Container>
-                    <Navbar.Brand style={{ cursor: 'pointer' }} onClick={onClickLogoHandler}>
+                    <Navbar.Brand style={{ cursor: 'pointer' }} onClick={onClickResetHandler}>
                         Movies Search App
                     </Navbar.Brand>
 
@@ -64,10 +49,14 @@ const Header = () => {
                                     type="text"
                                     placeholder="Search"
                                     className=" mr-sm-2"
+                                    value={userInput}
                                     onChange={(e) => setUserInput(e.target.value)}
                                 />
                                 <Button type="submit" onClick={(e) => onClickSearchHandler(e)}>
                                     Search
+                                </Button>
+                                <Button variant="secondary" onClick={onClickResetHandler}>
+                                    Reset search
                                 </Button>
                             </Form>
                         </Nav>

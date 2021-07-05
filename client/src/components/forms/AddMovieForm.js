@@ -3,7 +3,11 @@ import { Form, Row, Col, Button } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { createMovie } from '../../actions/movieActions';
 import { MOVIE_CREATE_RESET } from '../../constants/movieConstants';
-import { validateMovieInputs } from '../../helpers/validateMovieInputs';
+import {
+    checkStarFullnameForUniqueness,
+    validateMovieInputs,
+    validateStarFullname
+} from '../../helpers/validateMovieInputs';
 import StarsGroupForm from './StarsGroupForm';
 import Loader from '../common/Loader';
 import Message from '../common/Message';
@@ -17,7 +21,7 @@ const DEFAULT_VALIDATE_VALUES = {
 
 const DEFAULT_FORM_VALUES = {
     title: '',
-    releaseYear: '',
+    releaseYear: '2021',
     format: 'DVD',
     stars: [{ id: 1, value: '' }]
 };
@@ -28,6 +32,8 @@ const AddMovieForm = () => {
     const [formValues, setFormValues] = useState(DEFAULT_FORM_VALUES);
 
     const { loading, error, success } = useSelector((state) => state.movieCreate);
+
+    const { moviesRes } = useSelector((state) => state.movieList);
 
     const changeStars = (star) => {
         setFormValues({
@@ -44,6 +50,24 @@ const AddMovieForm = () => {
         setFormValues({ ...formValues, [target.name]: target.value });
     };
 
+    const arraysEqual = (arr1, arr2) => {
+        console.log(JSON.stringify(arr1) == JSON.stringify(arr2));
+        return JSON.stringify(arr1) == JSON.stringify(arr2);
+    };
+
+    const checkMovieForUniqueness = (movie) => {
+        let boolean = true;
+        moviesRes.movies.forEach((mov) => {
+            if (mov.title.toLowerCase() === movie.title.toLowerCase()) {
+                if (new Date(mov.releaseYear).getFullYear() === +movie.releaseYear) {
+                    const starsValueArr = movie.stars.map((st) => st.value);
+                    if (arraysEqual(mov.stars, starsValueArr)) boolean = false;
+                }
+            }
+        });
+        return boolean;
+    };
+
     const submitHandler = (e) => {
         e.preventDefault();
 
@@ -53,9 +77,23 @@ const AddMovieForm = () => {
             setValidateForms(validationErrors);
             return;
         }
+        const isMovieUnique = checkMovieForUniqueness({
+            title: formValues.title,
+            releaseYear: formValues.releaseYear,
+            format: formValues.format,
+            stars: formValues.stars
+        });
+        console.log(isMovieUnique);
+
+        if (!isMovieUnique) {
+            setValidateForms({
+                stars: 'This movie already exists in database'
+            });
+            return;
+        }
         setValidateForms(DEFAULT_VALIDATE_VALUES);
 
-        const releaseYearDate = new Date(formValues.releaseYear);
+        const releaseYearDate = new Date(formValues.releaseYear, 1);
 
         dispatch(
             createMovie({
@@ -69,6 +107,25 @@ const AddMovieForm = () => {
     };
 
     const addNewField = () => {
+        const trimmedStars = validateStarFullname(formValues.stars);
+
+        if (trimmedStars.length !== 0) {
+            setValidateForms({
+                stars: 'Star full name should not be empty and must contain both name and surname'
+            });
+            return;
+        }
+        if (formValues.stars.length !== 1) {
+            const boolean = checkStarFullnameForUniqueness(formValues.stars);
+            if (!boolean) {
+                setValidateForms({
+                    stars: 'Star full name should be unique'
+                });
+                return;
+            }
+        }
+        setValidateForms(DEFAULT_VALIDATE_VALUES);
+
         setFormValues({
             ...formValues,
             stars: [...formValues.stars, { id: Date.now(), value: '' }]
@@ -102,8 +159,10 @@ const AddMovieForm = () => {
                     <Form.Group controlId="releaseYear">
                         <Form.Label>Release Year</Form.Label>
                         <Form.Control
-                            type="date"
+                            type="number"
                             autoComplete="off"
+                            min="1890"
+                            max="2021"
                             name="releaseYear"
                             value={formValues.releaseYear}
                             onChange={onChange}></Form.Control>

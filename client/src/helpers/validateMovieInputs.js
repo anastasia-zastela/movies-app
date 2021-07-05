@@ -22,4 +22,22 @@ const validateMovieInputs = ({ title, releaseYear, format, stars }) => {
     return errors;
 };
 
-export { validateMovieInputs };
+const validateStarFullname = (stars) => {
+    return stars.filter(
+        (st) =>
+            !st.value.trim() ||
+            !/^[a-z]([-']?[a-z]+)*( [a-z]([-']?[a-z]+)*)+$/.test(st.value.trim().toLowerCase())
+    );
+};
+
+const checkStarFullnameForUniqueness = (stars) => {
+    let boolean = true;
+    for (let i = 0; i < stars.length; i++) {
+        if (stars[stars.length - 1].value.toLowerCase() === stars[i].value.toLowerCase()) {
+            boolean = false;
+        }
+    }
+    return boolean;
+};
+
+export { validateMovieInputs, validateStarFullname, checkStarFullnameForUniqueness };

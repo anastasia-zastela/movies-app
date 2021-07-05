@@ -3,9 +3,43 @@ import Movie from "../models/movieModel.js";
 // Fetch all movies
 // GET /api/products
 const getMovies = async (req, res) => {
-  const movies = await Movie.find({});
+  const pageSize = 8;
+  const page = Number(req.query.pageNumber) || 1;
 
-  res.json(movies);
+  const keyword1 = req.query.keyword
+    ? {
+        title: {
+          $regex: req.query.keyword,
+          $options: 'i',
+        },
+      }
+    : {}
+    const keyword2 = req.query.keyword
+    ? {
+        stars: {
+          $regex: req.query.keyword,
+          $options: 'i',
+        },
+      }
+    : {}
+
+  const count = await Movie.countDocuments({
+    "$or": [
+        keyword1,
+        keyword2
+    ]
+});
+
+  let movies = await Movie.find({
+    "$or": [
+        keyword1,
+        keyword2
+    ]
+})
+  .limit(pageSize)
+  .skip(pageSize * (page - 1));
+
+  res.json({ movies, page, pages: Math.ceil(count / pageSize) });
 };
 
 // Fetch single movie

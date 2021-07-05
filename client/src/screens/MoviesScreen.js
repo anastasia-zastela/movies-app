@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import MovieCard from '../components/MovieCard';
 import { Row, Col, Button } from 'react-bootstrap';
@@ -6,20 +6,19 @@ import { listMovies } from '../actions/movieActions';
 
 import Loader from '../components/common/Loader';
 import Message from '../components/common/Message';
+import Paginate from '../components/common/Paginate';
 
 const MoviesScreen = () => {
-    const [moviesToRender, setMoviesToRender] = useState('');
-
     const dispatch = useDispatch();
 
-    const { loading, error, movies } = useSelector((state) => state.movieList);
+    const { loading, error, moviesRes } = useSelector((state) => state.movieList);
 
-    const { filteredMovies } = useSelector((state) => state.moviesSearch);
+    const onClickPaginationHandler = (pageNumber) => {
+        dispatch(listMovies(pageNumber));
+    };
 
-    const onClickSortHandler = (moviesArr) => {
-        const sortedMoviesArr = moviesArr.sort((a, b) => a.title.localeCompare(b.title));
-
-        setMoviesToRender(sortedMoviesArr);
+    const onClickSortHandler = () => {
+        dispatch(listMovies(moviesRes.page, '', true));
     };
 
     const renderInputs = (moviesArr) => {
@@ -49,20 +48,11 @@ const MoviesScreen = () => {
         dispatch(listMovies());
     }, []);
 
-    useEffect(() => {
-        if (filteredMovies) {
-            setMoviesToRender(filteredMovies);
-        } else {
-            setMoviesToRender('');
-        }
-    }, [filteredMovies, movies]);
-
     return (
         <React.Fragment>
             <h1>Movies</h1>
             {loading ? null : error ? null : (
-                <Button
-                    onClick={() => onClickSortHandler(moviesToRender ? moviesToRender : movies)}>
+                <Button onClick={() => onClickSortHandler(moviesRes.movies)}>
                     Show in alphabetical order
                 </Button>
             )}
@@ -71,7 +61,14 @@ const MoviesScreen = () => {
             ) : error ? (
                 <Message variant="danger">{error}</Message>
             ) : (
-                <Row>{moviesToRender ? renderInputs(moviesToRender) : renderInputs(movies)}</Row>
+                <React.Fragment>
+                    <Row>{renderInputs(moviesRes.movies)}</Row>
+                    <Paginate
+                        page={moviesRes.page}
+                        pages={moviesRes.pages}
+                        onClickPaginationHandler={onClickPaginationHandler}
+                    />
+                </React.Fragment>
             )}
         </React.Fragment>
     );

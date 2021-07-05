@@ -3,7 +3,7 @@ import { Card, Button } from 'react-bootstrap';
 import ShowMoreModal from './modals/ShowMoreModal';
 import DeleteConfirmationModal from './modals/DeleteConfirmationModal';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteMovie, searchMoviesReset } from '../actions/movieActions';
+import { deleteMovie } from '../actions/movieActions';
 
 const MovieCard = ({ id, title, releaseYear, format, stars }) => {
     const dispatch = useDispatch();
@@ -29,7 +29,6 @@ const MovieCard = ({ id, title, releaseYear, format, stars }) => {
     useEffect(() => {
         if (successDelete) {
             handleCloseDeleteConfirmationModal();
-            dispatch(searchMoviesReset());
         }
     }, [dispatch, successDelete]);
 
